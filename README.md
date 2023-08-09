@@ -22,3 +22,8 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 - Do operations on objects (count, compute stats, etc…)
 - Update attributes of an object
 - Destroy an object
+
+
+
+
+<img src="https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/815046647d23428a14ca.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20230809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230809T190853Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=a82bf4f7a408ca352df1955c238cc36fb88c2eb218d780564a7e755247ef0bdf" width="300"/>
