@@ -6,12 +6,20 @@ from datetime import datetime
 class BaseModel():
     """ The Start  of the AirBnB project """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """ init """
 
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
+        if len(kwargs) > 0:
+            for key, val in kwargs.items():
+                if key != '__class__':
+                    setattr(self, key, val)
+                elif key == 'created_at' or key == 'updated_at':
+                    dt_format = "%Y-%m-%dT%H:%M:%S.%f"
+                    setattr(self, key, datetime.strptime(value, dt_format))
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
 
     def __str__(self):
         return (f'[{self.__class__.__name__}] ({self.id})  {self.__dict__}')
