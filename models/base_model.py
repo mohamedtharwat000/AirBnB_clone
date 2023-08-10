@@ -2,6 +2,7 @@
 """ Here goes everything, BaseModel, the start of AirBnb The console Project """
 from uuid import uuid4
 from datetime import datetime
+import models
 
 class BaseModel():
     """ The Start  of the AirBnB project """
@@ -20,6 +21,8 @@ class BaseModel():
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            models.storage.new(self)
+
 
     def __str__(self):
         return (f'[{self.__class__.__name__}] ({self.id})  {self.__dict__}')
@@ -29,8 +32,9 @@ class BaseModel():
             updates the public instance attribute updated_at
             with the current datetime 
         """
-
+        
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """
