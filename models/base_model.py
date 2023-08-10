@@ -42,7 +42,7 @@ class BaseModel():
             of __dict__ of the instance
         """
 
-        dict = obj_dict = self.__dict__.copy()
+        dict = self.__dict__.copy()
         dict['__class__'] = self.__class__.__name__
         dict['created_at'] = self.created_at.isoformat()
         dict['updated_at'] = self.updated_at.isoformat()
