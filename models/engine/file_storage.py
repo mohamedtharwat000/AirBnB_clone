@@ -8,13 +8,7 @@
 import json
 from os.path import exists
 from datetime import datetime
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
+
 
 class FileStorage():
     """
@@ -55,8 +49,9 @@ class FileStorage():
                 instances = json.load(file)
                 new_objects = {}
                 for key, objs in instances.items():
+                    cls = eval(objs["__class__"])
                     for dt in ['created_at', 'updated_at']:
                         dt_format = "%Y-%m-%dT%H:%M:%S.%f"
                         objs[dt] = datetime.strptime(objs[dt], dt_format)
-                    new_objects[key] = BaseModel(**objs)
+                    new_objects[key] = cls(**objs)
                 self.__class__.__objects = new_objects
