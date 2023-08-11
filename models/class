@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+"""ZZZ Class"""
+from models.base_model import BaseModel
+
+class ZZZ(BaseModel):
+	"""
+		class ZZZ that inherits from BaseModel
+	"""
+
