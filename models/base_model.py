@@ -4,9 +4,9 @@
     Here goes everything, BaseModel, the start of AirBnb The console Project
 """
 
+import models
 from uuid import uuid4
 from datetime import datetime
-import models
 
 
 class BaseModel():
