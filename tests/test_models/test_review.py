@@ -45,7 +45,7 @@ class TestReview(unittest.TestCase):
         self.assertEqual(review.place_id, 'ABC-123')
         self.assertEqual(review.user_id, 'XYZ-123')
         tmp_txt = 'It\'s a wonderful palce, the kids loved it.'
-        self.assertEqual(review.text, tmp_text)
+        self.assertEqual(review.text, tmp_txt)
 
 
 class TestUserAndConsole(unittest.TestCase):
