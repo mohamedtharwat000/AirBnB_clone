@@ -7,6 +7,7 @@ from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 from models import storage
 
+
 class TestState(unittest.TestCase):
     """The start of unittest for State Class"""
 
@@ -25,8 +26,10 @@ class TestState(unittest.TestCase):
         self.assertTrue("created_at" in state_dict)
         self.assertTrue("updated_at" in state_dict)
         self.assertEqual(state_dict["__class__"], "State")
-        self.assertEqual(state_dict["created_at"], state.created_at.isoformat())
-        self.assertEqual(state_dict["updated_at"], state.updated_at.isoformat())
+        tmp_1 = state.created_at.isoformat()
+        tmp_2 = state.updated_at.isoformat()
+        self.assertEqual(state_dict["created_at"], tmp_1)
+        self.assertEqual(state_dict["updated_at"], tmp_2)
 
     def test_set_values(self):
         """assign values to the attributes of a State
@@ -55,4 +58,3 @@ class TestUserAndConsole(unittest.TestCase):
         # we will change the state from Las Vegas to Chicago
         self.console.onecmd(f'update State {state.id} name "Chicago"')
         self.assertEqual(state.name, 'Chicago')
-

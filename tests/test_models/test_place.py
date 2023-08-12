@@ -7,6 +7,7 @@ from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 from models import storage
 
+
 class TestPlace(unittest.TestCase):
     """The start of unittest for Place Class"""
 
@@ -35,8 +36,10 @@ class TestPlace(unittest.TestCase):
         self.assertTrue("created_at" in place_dict)
         self.assertTrue("updated_at" in place_dict)
         self.assertEqual(place_dict["__class__"], "Place")
-        self.assertEqual(place_dict["created_at"], place.created_at.isoformat())
-        self.assertEqual(place_dict["updated_at"], place.updated_at.isoformat())
+        tmp_1 = place.created_at.isoformat()
+        tmp_2 = place.updated_at.isoformat()
+        self.assertEqual(place_dict["created_at"], tmp_1)
+        self.assertEqual(place_dict["updated_at"], tmp_2)
 
     def test_set_values(self):
         """assign values to the attributes of a Place

@@ -7,7 +7,8 @@ from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 from models import storage
 
-class  TestAmenity(unittest.TestCase):
+
+class TestAmenity(unittest.TestCase):
     """The start of unittest for Amenity Class"""
 
     def test_attributes(self):
@@ -25,8 +26,10 @@ class  TestAmenity(unittest.TestCase):
         self.assertTrue("created_at" in amenity_dict)
         self.assertTrue("updated_at" in amenity_dict)
         self.assertEqual(amenity_dict["__class__"], "Amenity")
-        self.assertEqual(amenity_dict["created_at"], amenity.created_at.isoformat())
-        self.assertEqual(amenity_dict["updated_at"], amenity.updated_at.isoformat())
+        tmp_1 = amenity.created_at.isoformat()
+        tmp_2 = amenity.updated_at.isoformat()
+        self.assertEqual(amenity_dict["created_at"], tmp_1)
+        self.assertEqual(amenity_dict["updated_at"], tmp_2)
 
     def test_set_values(self):
         """assign values to the attributes of a Amenity
@@ -55,4 +58,3 @@ class TestUserAndConsole(unittest.TestCase):
         # we will change the amenity from Bad to Perfect
         self.console.onecmd(f'update Amenity {amenity.id} name "Perfect"')
         self.assertEqual(amenity.name, 'Perfect')
-

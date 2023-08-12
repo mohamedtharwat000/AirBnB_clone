@@ -7,6 +7,7 @@ from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 from models import storage
 
+
 class TestReview(unittest.TestCase):
     """The start of unittest for Review Class"""
 
@@ -27,8 +28,10 @@ class TestReview(unittest.TestCase):
         self.assertTrue("created_at" in review_dict)
         self.assertTrue("updated_at" in review_dict)
         self.assertEqual(review_dict["__class__"], "Review")
-        self.assertEqual(review_dict["created_at"], review.created_at.isoformat())
-        self.assertEqual(review_dict["updated_at"], review.updated_at.isoformat())
+        tmp_1 = review.created_at.isoformat()
+        tmp_2 = review.updated_at.isoformat()
+        self.assertEqual(review_dict["created_at"], tmp_1)
+        self.assertEqual(review_dict["updated_at"], tmp_2)
 
     def test_set_values(self):
         """assign values to the attributes of a Review
@@ -41,8 +44,9 @@ class TestReview(unittest.TestCase):
         review.text = 'It\'s a wonderful palce, the kids loved it.'
         self.assertEqual(review.place_id, 'ABC-123')
         self.assertEqual(review.user_id, 'XYZ-123')
-        self.assertEqual(review.text,
-                        'It\'s a wonderful palce, the kids loved it.')
+        tmp_txt = 'It\'s a wonderful palce, the kids loved it.'
+        self.assertEqual(review.text, tmp_text)
+
 
 class TestUserAndConsole(unittest.TestCase):
     """Test the Review class with the console"""
@@ -59,11 +63,11 @@ class TestUserAndConsole(unittest.TestCase):
         review.place_id = 'ABC-456'
         review.user_id = 'XYZ-456'
         review.text = 'Good place, but the kitchen wasn\'t good.'
-        
+
         # we will change the place_id from ABC-456 to DEF-789
         self.console.onecmd(f'update Review {review.id} place_id "DEF-789"')
         self.assertEqual(review.place_id, 'DEF-789')
-        
+
         # user_id from XYZ-456 to GHI-789
         self.console.onecmd(f'update Review {review.id} user_id "GHI-789"')
         self.assertEqual(review.user_id, 'GHI-789')
@@ -72,6 +76,3 @@ class TestUserAndConsole(unittest.TestCase):
         temp_text = 'Great!!!'
         self.console.onecmd(f'update Review {review.id} text "{temp_text}"')
         self.assertEqual(review.text, temp_text)
-        
-
-

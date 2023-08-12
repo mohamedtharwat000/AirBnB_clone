@@ -6,6 +6,7 @@ from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 from models import storage
 
+
 class TestCity(unittest.TestCase):
     """The start of unittest for City Class"""
 
