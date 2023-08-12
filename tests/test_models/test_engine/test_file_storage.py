@@ -25,6 +25,7 @@ class TestFileStorage(unittest.TestCase):
         del self.fs
         del self.bm
 
+    
     def test_new_instance(self):
         """Test creating a new instance of FileStorage"""
         self.assertIsInstance(self.fs, FileStorage)
