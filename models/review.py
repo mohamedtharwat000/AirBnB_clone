@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 
-"""Review Class"""
+"""Review Class."""
 
 from models.base_model import BaseModel
 
 
 class Review(BaseModel):
-    """
-        class Review that inherits from BaseModel
-    """
+    """Review class Review that inherits from BaseModel."""
 
     place_id = ''
     user_id = ''

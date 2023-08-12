@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-"""
-    entry point of the command interpreter.
-"""
+"""entry point of the command interpreter."""
 
 import cmd
 import models
@@ -16,35 +14,29 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """
-        HBNBCommand - Entry to command interpreter
-    """
+    """Entry to command interpreter."""
+
     prompt = "(hbnb) "
     classes = [BaseModel, User, State, City, Amenity, Place, Review]
 
     def do_EOF(self, line):
-        """
-            Exit on Ctrl-D (EOF)
-        """
+        """Exit on Ctrl-D (EOF)."""
+        print()
         return True
 
     def do_quit(self, line):
-        """
-            Exit on quit
-        """
+        """Exit on quit."""
         return True
 
     def emptyline(self):
-        """
-            Do nothing on empty line
-        """
+        """Do nothing on empty line."""
         pass
 
     def do_create(self, line):
-        """
-            create - Create instance specified by user
-            Args:
-                line: class name
+        """Create instance specified by user.
+
+        Args:
+            line: class name
         """
         if not line:
             print("** class name missing **")
@@ -59,10 +51,10 @@ class HBNBCommand(cmd.Cmd):
                     print(instance.id)
 
     def do_show(self, line):
-        """
-            show - Print string representation: name and id
-            Args:
-                line: class name and id
+        """Print string representation: name and id.
+
+        Args:
+            line: class name and id
         """
         if not line:
             print("** class name missing **")
@@ -81,10 +73,10 @@ class HBNBCommand(cmd.Cmd):
         print(models.storage.all()[name])
 
     def do_destroy(self, line):
-        """
-            destroy - Destroy instance and Save changes to JSON file
-            Args:
-                line: class name
+        """Destroy instance and Save changes to JSON file.
+
+        Args:
+            line: class name
         """
         if not line:
             print("** class name missing **")
@@ -104,10 +96,10 @@ class HBNBCommand(cmd.Cmd):
         models.storage.save()
 
     def do_all(self, line):
-        """
-            all - Print all objects or all objects of specified class
-            Args:
-                line: class name
+        """Print all objects or all objects of specified class.
+
+        Args:
+            line: class name
         """
         obj_list = []
         if not line:
@@ -125,10 +117,10 @@ class HBNBCommand(cmd.Cmd):
         print(obj_list)
 
     def do_update(self, line):
-        """
-            update - Update if given exact object, exact attribute
-            Args:
-                line: class name, id, attribute, value
+        """Update if given exact object, exact attribute.
+
+        Args:
+            line: class name, id, attribute, value
         """
         if not line:
             print("** class name missing **")
@@ -158,11 +150,9 @@ class HBNBCommand(cmd.Cmd):
 
 
 def parse_line(line):
-    """
-        Helper method to split user typed input
-    """
+    """Split user typed input."""
     return line.split()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     HBNBCommand().cmdloop()

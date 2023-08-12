@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-"""
-    Here goes everything, BaseModel, the start of AirBnb The console Project
-"""
+"""Here goes everything, BaseModel, the start of AirBnb The console Project."""
 
 import models
 from uuid import uuid4
@@ -10,16 +8,14 @@ from datetime import datetime
 
 
 class BaseModel():
-    """
-        This is the base model of the AirBnB project
-    """
+    """This is the base model of the AirBnB project."""
 
     def __init__(self, *args, **kwargs):
-        """
-            __init__ - class constructor
-            Args:
-                args: list of arguments
-                kwargs: dictionary of arguments
+        """Class constructor.
+
+        Args:
+            args: list of arguments
+            kwargs: dictionary of arguments
         """
         if kwargs:
             for key, val in kwargs.items():
@@ -38,24 +34,16 @@ class BaseModel():
             models.storage.new(self)
 
     def __str__(self):
-        """
-            returns a string representation of the class instance
-        """
+        """Return the string representation of the class instance."""
         return (f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}')
 
     def save(self):
-        """
-            updates the public instance attribute updated_at
-            with the current datetime
-        """
+        """Update the public instance attribute updated_at."""
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        """
-            returns a dictionary containing all keys/values
-            of __dict__ of the instance
-        """
+        """Return a dictionary containing all keys/values of the instance."""
         dict = self.__dict__.copy()
         dict['__class__'] = self.__class__.__name__
         dict['created_at'] = self.created_at.isoformat()
