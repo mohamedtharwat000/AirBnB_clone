@@ -48,5 +48,6 @@ class TestFileStorage(unittest.TestCase):
         """Test the 'reload' method"""
         self.fs.save()
         self.fs.reload()
-        self.assertEqual(self.fs.all()[f"BaseModel.{self.bm.id}"].id,
+        cls_name = self.bm.__class__.__name__
+        self.assertEqual(self.fs.all()[f"{cls_name}.{self.bm.id}"].id,
                                                             self.bm.id)
