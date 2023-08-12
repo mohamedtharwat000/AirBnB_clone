@@ -4,6 +4,7 @@
 
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models import storage
 import unittest
 import json
 from os.path import exists
@@ -34,14 +35,16 @@ class TestFileStorage(unittest.TestCase):
 
     def test_new(self):
         """Test the 'all' method and creating new objects"""
-        self.assertEqual(self.fs.all()[f"BaseModel.{self.bm.id}"], self.bm)
+        cls_name = self.bm.__class__.__name__
+        self.assertEqual(self.fs.all()[f"{cls_name}.{self.bm.id}"], self.bm)
 
     def test_save(self):
         """Test the 'save' method and JSON file creation"""
         self.fs.save()
         self.assertTrue(exists("./file.json"))
         with open("./file.json", "r") as file:
-            self.assertEqual(json.load(file)[f"BaseModel.{self.bm.id}"],
+            cls_name = self.bm.__class__.__name__
+            self.assertEqual(json.load(file)[f"{cls_name}.{self.bm.id}"],
                                                             self.bm.to_dict())
 
     def test_reload(self):
@@ -51,3 +54,14 @@ class TestFileStorage(unittest.TestCase):
         cls_name = self.bm.__class__.__name__
         self.assertEqual(self.fs.all()[f"{cls_name}.{self.bm.id}"].id,
                                                             self.bm.id)
+    def test_reload_v2(self):
+        """test reload method which is from FileStorage Class"""
+
+        self.bm.name = 'Mohammed'
+        self.bm.save()
+        storage.reload()
+
+        reloaded_bm = storage.all()[f'{self.bm.__class__.__name__}'
+                                    f'.{self.bm.id}']
+
+        self.assertEqual(reloaded_bm.name, 'Mohammed')
