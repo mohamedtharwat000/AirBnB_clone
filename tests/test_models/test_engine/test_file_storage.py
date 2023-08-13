@@ -97,13 +97,11 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(len(self.__class__.fs._FileStorage__objects), ln)
 
     def test_new_invalid_input(self):
-        """test the new method with an invalid input"""
-
+        """Test the new method with an invalid input."""
         with self.assertRaises(AttributeError):
             self.__class__.fs.new("input_should_be_an_obk")
 
     def test_save_invalid_input(self):
-        """test save method, passing an invalid input"""
-
+        """Test save method, passing an invalid input."""
         with self.assertRaises(TypeError):
             self.__class__.fs.save("invalid_input")
