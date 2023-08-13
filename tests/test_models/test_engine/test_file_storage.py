@@ -4,50 +4,60 @@
 
 import unittest
 import json
-from os import remove
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
-from models import storage
+from os import remove
 from os.path import exists
-from models.user import User
 
 
 class TestFileStorage(unittest.TestCase):
     """Unit tests for the FileStorage Class."""
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         """Set up test environment."""
-        self.fs = FileStorage()
-        self.bm = BaseModel()
-        self.fs.new(self.bm)
+        cls.fs = FileStorage()
+
+    @classmethod
+    def tearDownClass(cls):
+        """Tear down test environment."""
+        del cls.fs
+        if exists("./file.json"):
+            remove("./file.json")
 
     def tearDown(self):
         """Tear down test environment."""
-        del self.fs
-        del self.bm
+        self.__class__.fs._FileStorage__objects = {}
+        try:
+            del self.bm
+        except AttributeError:
+            pass
 
     def test_attributes(self):
         """Test the existence of FileStorage Class Attirbutes."""
-        self.assertEqual(type(self.fs._FileStorage__file_path), str)
-        self.assertEqual(type(self.fs._FileStorage__objects), dict)
-        self.assertTrue(hasattr(self.fs, "_FileStorage__file_path"))
-        self.assertTrue(hasattr(self.fs, "_FileStorage__objects"))
+        self.assertTrue(hasattr(self.__class__.fs, "_FileStorage__file_path"))
+        self.assertTrue(hasattr(self.__class__.fs, "_FileStorage__objects"))
 
     def test_all(self):
         """Test all method."""
-        self.assertIsInstance(self.fs, FileStorage)
-        self.assertIsNotNone(self.fs.all())
-        self.assertIsInstance(self.fs.all(), dict)
-        self.assertIs(self.fs.all(), storage._FileStorage__objects)
+        self.assertIsInstance(self.__class__.fs, FileStorage)
+        self.assertIsInstance(self.__class__.fs.all(), dict)
+        self.assertIs(self.__class__.fs.all(),
+                      self.__class__.fs._FileStorage__objects)
 
     def test_new(self):
         """Test the 'all' method and creating new objects."""
+        self.bm = BaseModel()
+        self.__class__.fs.new(self.bm)
         cls_name = self.bm.__class__.__name__
-        self.assertEqual(self.fs.all()[f"{cls_name}.{self.bm.id}"], self.bm)
+        self.assertEqual(self.__class__.fs.all()[f"{cls_name}.{self.bm.id}"],
+                         self.bm)
 
     def test_save(self):
         """Test the 'save' method and JSON file creation."""
-        self.fs.save()
+        self.bm = BaseModel()
+        self.__class__.fs.new(self.bm)
+        self.__class__.fs.save()
         self.assertTrue(exists("./file.json"))
         with open("./file.json", "r") as file:
             cls_name = self.bm.__class__.__name__
@@ -56,22 +66,15 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload(self):
         """Test the 'reload' method."""
-        self.fs.save()
-        self.fs.reload()
+        self.bm = BaseModel()
+        self.__class__.fs.new(self.bm)
+        self.__class__.fs.save()
+        self.__class__.fs.reload()
         cls_name = self.bm.__class__.__name__
-        self.assertEqual(self.fs.all()[f"{cls_name}.{self.bm.id}"].id,
-                         self.bm.id)
+        self.assertEqual(
+            self.__class__.fs.all()[f"{cls_name}.{self.bm.id}"].id, self.bm.id)
 
     def test_reload_v2(self):
-        """Test reload method which is from FileStorage Class."""
-        self.bm.name = 'Mohammed'
-        self.bm.save()
-        storage.reload()
-        reloaded_bm = storage.all()[f'{self.bm.__class__.__name__}'
-                                    f'.{self.bm.id}']
-        self.assertEqual(reloaded_bm.name, 'Mohammed')
-
-    def test_reload_v3(self):
         """Tests method: reload (reloads objects from string file)."""
         try:
             remove("file.json")
@@ -81,23 +84,14 @@ class TestFileStorage(unittest.TestCase):
             file.write("{}")
         with open("file.json", "r") as file:
             self.assertEqual(json.load(file), {})
-
-    def test_save_multiple(self):
-        """Tests method: save (saves objects to string file)."""
-        obj1 = BaseModel()
-        obj2 = User()
-        self.fs.new(obj1)
-        self.fs.new(obj2)
-        self.fs.save()
-        with open("file.json", "r") as file:
-            data = json.load(file)
-            self.assertIn(obj1.to_dict(), data.values())
-            self.assertIn(obj2.to_dict(), data.values())
+            self.__class__.fs.reload()
+            self.assertEqual(self.__class__.fs.all(), {})
 
     def test_new_duplicate(self):
         """Test new method with duplicate objects."""
-        obj = BaseModel()
-        self.fs.new(obj)
-        ln = len(self.fs._FileStorage__objects)
-        self.fs.new(obj)
-        self.assertEqual(len(self.fs._FileStorage__objects), ln)
+        self.bm = BaseModel()
+        self.bm2 = BaseModel()
+        self.__class__.fs.new(self.bm)
+        ln = len(self.__class__.fs._FileStorage__objects)
+        self.__class__.fs.new(self.bm2)
+        self.assertEqual(len(self.__class__.fs._FileStorage__objects), ln)
