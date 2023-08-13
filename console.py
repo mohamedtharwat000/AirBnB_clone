@@ -19,6 +19,24 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     classes = [BaseModel, User, State, City, Amenity, Place, Review]
 
+    def default(self, line):
+        """Default method to handle custom command format
+           
+            <command> <class_name> or <class_name>.<command>()
+        
+        Args:
+            line: inputed line
+        """
+        if "." in line:
+            parts = line.split(".")
+            commands = ['all()']
+            if len(parts) == 2 and parts[1] in commands:
+                full_command = 'do_' + parts[1][:-2]
+                class_name = parts[0]
+                getattr(self, full_command)(class_name)
+                return
+        return cmd.Cmd.default(self, line)
+
     def do_EOF(self, line):
         """Exit on Ctrl-D (EOF)."""
         print()
@@ -147,6 +165,22 @@ class HBNBCommand(cmd.Cmd):
         attr_val = attr_val.strip('"')
         setattr(models.storage.all()[name], args[2], type_val(attr_val))
         models.storage.save()
+
+    def do_alo(self, line):
+        """Prints all instances of a given class."""
+        args = line.split()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name not in models.__dict__:
+            print("** class doesn't exist **")
+            return
+
+        class_obj = models.__dict__[class_name]
+        instances = models.storage.all(class_obj)
+        self.print_instances(instances)
 
 
 def parse_line(line):
