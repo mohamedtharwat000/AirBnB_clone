@@ -174,23 +174,22 @@ class HBNBCommand(cmd.Cmd):
                         id = args[1].split('"')[1]
                         self.do_destroy(f"{cls} {id}")
                     elif command == 'update':
+                        id = args[1].split('"')[1]
                         if args[1].split('"')[2].startswith(", {"):
-                            in_dict = args[1].split('{')
-                            in_dict = "{" + in_dict[1].split('}')[0] + "}"
+                            in_dict = args[1].split('{')[1].split('}')[0]
+                            in_dict = "{" + in_dict + "}"
                             in_dict = eval(in_dict)
                             for key, value in in_dict.items():
-                                self.do_update(f"{cls} {id} {key} {value}")
+                                self.do_update(f"{cls} {id} '{key}' '{value}'")
                         else:
-                            id = args[1].split('"')[1]
                             key = args[1].split('"')[3]
                             value = "\"" + args[1].split('"')[5] + "\""
                             self.do_update(f"{cls} {id} {key} {value}")
         else:
             return cmd.Cmd.default(self, line)
 
-
     def do_count(self, line):
-        """Display count of instances specified"""
+        """Display count of instances specified."""
         if eval(line) in HBNBCommand.classes:
             count = 0
             for key, objs in models.storage.all().items():
