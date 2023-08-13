@@ -157,14 +157,19 @@ class HBNBCommand(cmd.Cmd):
             line: inputed line
         """
         if "." in line:
-            parts = line.split(".")
+            args = line.split(".")
             commands = ["all", "count", "show", "destroy", "update"]
-            if len(parts) == 2:
-                c_name = parts[0]
-                command = parts[1].split("(")[0]
-                if eval(c_name) in HBNBCommand.classes and command in commands:
-                    to_run = eval(f"self.do_{command}")
-                    to_run(c_name)
+            if len(args) == 2:
+                cls = args[0]
+                command = args[1].split("(")[0]
+                if eval(cls) in HBNBCommand.classes and command in commands:
+                    if command == 'all':
+                        self.do_all(cls)
+                    elif command == 'count':
+                        self.do_count(cls)
+                    elif command == 'show':
+                        id = args[1].split('"')[1]
+                        self.do_show(f"{cls} {id}")
         else:
             return cmd.Cmd.default(self, line)
 
