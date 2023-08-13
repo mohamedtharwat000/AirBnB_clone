@@ -19,24 +19,6 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     classes = [BaseModel, User, State, City, Amenity, Place, Review]
 
-    def default(self, line):
-        """Default method to handle custom command format
-           
-            <command> <class_name> or <class_name>.<command>()
-        
-        Args:
-            line: inputed line
-        """
-        if "." in line:
-            parts = line.split(".")
-            commands = ['all()', 'count()']
-            if len(parts) == 2 and parts[1] in commands:
-                full_command = 'do_' + parts[1][:-2]
-                class_name = parts[0]
-                getattr(self, full_command)(class_name)
-                return
-        return cmd.Cmd.default(self, line)
-
     def do_EOF(self, line):
         """Exit on Ctrl-D (EOF)."""
         print()
@@ -166,13 +148,31 @@ class HBNBCommand(cmd.Cmd):
         setattr(models.storage.all()[name], args[2], type_val(attr_val))
         models.storage.save()
 
+    def default(self, line):
+        """Handle custom command format.
+
+            <command> <class_name> or <class_name>.<command>()
+
+        Args:
+            line: inputed line
+        """
+        if "." in line:
+            parts = line.split(".")
+            commands = {"all": self.do_all, "count": self.do_count}
+            if len(parts) == 2:
+                c_name = parts[0]
+                command = parts[1]
+                if eval(c_name) in HBNBCommand.classes and command in commands:
+                    commands[command](c_name)
+        else:
+            return cmd.Cmd.default(self, line)
+
     def do_count(self, line):
-        """Return the number of instances of a class
-        
+        """Return the number of instances of a class.
+
         Args:
             line: count <class_name> or <class_name>.count()
         """
-
         if not line:
             print("** class name missing **")
             return
@@ -180,9 +180,9 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in [cls.__name__ for cls in HBNBCommand.classes]:
             print("** class doesn't exist **")
             return
-        
         count = eval(args[0]).count()
         print(count)
+
 
 def parse_line(line):
     """Split user typed input."""
