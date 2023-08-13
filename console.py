@@ -158,14 +158,16 @@ class HBNBCommand(cmd.Cmd):
         """
         if "." in line:
             parts = line.split(".")
-            commands = {"all": self.do_all, "count": self.do_count}
+            commands = ["all", "count", "show", "destroy", "update"]
             if len(parts) == 2:
                 c_name = parts[0]
-                command = parts[1]
+                command = parts[1].split("(")[0]
                 if eval(c_name) in HBNBCommand.classes and command in commands:
-                    commands[command](c_name)
+                    to_run = eval(f"self.do_{command}")
+                    to_run(c_name)
         else:
             return cmd.Cmd.default(self, line)
+
 
     def do_count(self, line):
         """Display count of instances specified"""
