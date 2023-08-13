@@ -175,8 +175,9 @@ class HBNBCommand(cmd.Cmd):
                         self.do_destroy(f"{cls} {id}")
                     elif command == 'update':
                         id = args[1].split('"')[1]
-                        property = args[3]
-                        value = args[5]
+                        property = args[1].split('"')[3]
+                        value = "\"" + args[1].split('"')[5] + "\""
+                        print(id, property, value)
                         self.do_update(f"{cls} {id} {property} {value}")
         else:
             return cmd.Cmd.default(self, line)
