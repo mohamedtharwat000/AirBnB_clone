@@ -34,6 +34,19 @@ class TestFileStorage(unittest.TestCase):
         """Test all method"""
         self.assertIsInstance(self.fs.all(), dict)
 
+    def test_attributes(self):
+        """test the existence of FileStorage Class Attirbutes"""
+
+        self.assertTrue(hasattr(self.fs, "_FileStorage__file_path"))
+        self.assertTrue(hasattr(self.fs, "_FileStorage__objects"))
+
+    def test_attributes_type(self):
+        """test the type of FileStorage Class Attirbutes"""
+
+        self.assertIsInstance(self.fs._FileStorage__file_path, str)
+        self.assertIsInstance(self.fs._FileStorage__objects, dict)
+
+
     def test_new(self):
         """Test the 'all' method and creating new objects"""
         cls_name = self.bm.__class__.__name__
