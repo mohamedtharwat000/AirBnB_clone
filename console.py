@@ -173,6 +173,11 @@ class HBNBCommand(cmd.Cmd):
                     elif command == 'destroy':
                         id = args[1].split('"')[1]
                         self.do_destroy(f"{cls} {id}")
+                    elif command == 'update':
+                        id = args[1].split('"')[1]
+                        property = args[3]
+                        value = args[5]
+                        self.do_update(f"{cls} {id} {property} {value}")
         else:
             return cmd.Cmd.default(self, line)
 
