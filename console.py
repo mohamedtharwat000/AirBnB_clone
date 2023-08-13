@@ -168,20 +168,15 @@ class HBNBCommand(cmd.Cmd):
             return cmd.Cmd.default(self, line)
 
     def do_count(self, line):
-        """Return the number of instances of a class.
-
-        Args:
-            line: count <class_name> or <class_name>.count()
-        """
-        if not line:
-            print("** class name missing **")
-            return
-        args = parse_line(line)
-        if args[0] not in [cls.__name__ for cls in HBNBCommand.classes]:
+        """Display count of instances specified"""
+        if eval(line) in HBNBCommand.classes:
+            count = 0
+            for key, objs in models.storage.all().items():
+                if line in key:
+                    count += 1
+            print(count)
+        else:
             print("** class doesn't exist **")
-            return
-        count = eval(args[0]).count()
-        print(count)
 
 
 def parse_line(line):
