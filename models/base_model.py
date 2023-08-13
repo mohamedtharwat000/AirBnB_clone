@@ -49,3 +49,11 @@ class BaseModel():
         dict['created_at'] = self.created_at.isoformat()
         dict['updated_at'] = self.updated_at.isoformat()
         return dict
+
+    @classmethod
+    def count(cls):
+        """Count the number of instances of the class"""
+        
+        instances = models.storage.all()
+        count = sum(1 for key in instances.keys() if key.startswith(cls.__name__))
+        return count

@@ -29,7 +29,7 @@ class HBNBCommand(cmd.Cmd):
         """
         if "." in line:
             parts = line.split(".")
-            commands = ['all()']
+            commands = ['all()', 'count()']
             if len(parts) == 2 and parts[1] in commands:
                 full_command = 'do_' + parts[1][:-2]
                 class_name = parts[0]
@@ -166,22 +166,23 @@ class HBNBCommand(cmd.Cmd):
         setattr(models.storage.all()[name], args[2], type_val(attr_val))
         models.storage.save()
 
-    def do_alo(self, line):
-        """Prints all instances of a given class."""
-        args = line.split()
-        if len(args) == 0:
+    def do_count(self, line):
+        """Return the number of instances of a class
+        
+        Args:
+            line: count <class_name> or <class_name>.count()
+        """
+
+        if not line:
             print("** class name missing **")
             return
-
-        class_name = args[0]
-        if class_name not in models.__dict__:
+        args = parse_line(line)
+        if args[0] not in [cls.__name__ for cls in HBNBCommand.classes]:
             print("** class doesn't exist **")
             return
-
-        class_obj = models.__dict__[class_name]
-        instances = models.storage.all(class_obj)
-        self.print_instances(instances)
-
+        
+        count = eval(args[0]).count()
+        print(count)
 
 def parse_line(line):
     """Split user typed input."""
