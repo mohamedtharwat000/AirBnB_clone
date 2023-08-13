@@ -2,13 +2,14 @@
 
 """Unit tests for the FileStorage Class."""
 
+import unittest
+import json
 from os import remove
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models import storage
-import unittest
-import json
 from os.path import exists
+from models.user import User
 
 
 class TestFileStorage(unittest.TestCase):
@@ -80,3 +81,23 @@ class TestFileStorage(unittest.TestCase):
             file.write("{}")
         with open("file.json", "r") as file:
             self.assertEqual(json.load(file), {})
+
+    def test_save_multiple(self):
+        """Tests method: save (saves objects to string file)."""
+        obj1 = BaseModel()
+        obj2 = User()
+        self.fs.new(obj1)
+        self.fs.new(obj2)
+        self.fs.save()
+        with open("file.json", "r") as file:
+            data = json.load(file)
+            self.assertIn(obj1.to_dict(), data.values())
+            self.assertIn(obj2.to_dict(), data.values())
+
+    def test_new_duplicate(self):
+        """Test new method with duplicate objects."""
+        obj = BaseModel()
+        self.fs.new(obj)
+        ln = len(self.fs._FileStorage__objects)
+        self.fs.new(obj)
+        self.assertEqual(len(self.fs._FileStorage__objects), ln)
