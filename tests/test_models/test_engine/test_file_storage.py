@@ -2,13 +2,13 @@
 
 """Unit tests for the FileStorage Class"""
 
+from os import remove
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models import storage
 import unittest
 import json
 from os.path import exists
-from os import remove
 
 
 class TestFileStorage(unittest.TestCase):
@@ -25,27 +25,19 @@ class TestFileStorage(unittest.TestCase):
         del self.fs
         del self.bm
 
-    
-    def test_new_instance(self):
-        """Test creating a new instance of FileStorage"""
-        self.assertIsInstance(self.fs, FileStorage)
-
-    def test_all(self):
-        """Test all method"""
-        self.assertIsInstance(self.fs.all(), dict)
-
     def test_attributes(self):
         """test the existence of FileStorage Class Attirbutes"""
-
+        self.assertEqual(type(self.fs._FileStorage__file_path), str)
+        self.assertEqual(type(self.fs._FileStorage__objects), dict)
         self.assertTrue(hasattr(self.fs, "_FileStorage__file_path"))
         self.assertTrue(hasattr(self.fs, "_FileStorage__objects"))
 
-    def test_attributes_type(self):
-        """test the type of FileStorage Class Attirbutes"""
-
-        self.assertEqual(type(self.fs._FileStorage__file_path), str)
-        self.assertEqual(type(self.fs._FileStorage__objects), dict)
-
+    def test_all(self):
+        """Test all method"""
+        self.assertIsInstance(self.fs, FileStorage)
+        self.assertIsNotNone(self.fs.all())
+        self.assertIsInstance(self.fs.all(), dict)
+        self.assertIs(self.fs.all(), storage._FileStorage__objects)
 
     def test_new(self):
         """Test the 'all' method and creating new objects"""
@@ -68,14 +60,23 @@ class TestFileStorage(unittest.TestCase):
         cls_name = self.bm.__class__.__name__
         self.assertEqual(self.fs.all()[f"{cls_name}.{self.bm.id}"].id,
                                                             self.bm.id)
+
     def test_reload_v2(self):
         """test reload method which is from FileStorage Class"""
-
         self.bm.name = 'Mohammed'
         self.bm.save()
         storage.reload()
-
         reloaded_bm = storage.all()[f'{self.bm.__class__.__name__}'
                                     f'.{self.bm.id}']
-
         self.assertEqual(reloaded_bm.name, 'Mohammed')
+
+    def test_reload_v3(self):
+        """Tests method: reload (reloads objects from string file)"""
+        try:
+            remove("file.json")
+        except:
+            pass
+        with open("file.json", "w") as file:
+            file.write("{}")
+        with open("file.json", "r") as file:
+            self.assertEqual(json.load(file), {})
