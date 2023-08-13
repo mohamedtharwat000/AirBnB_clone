@@ -43,8 +43,8 @@ class TestFileStorage(unittest.TestCase):
     def test_attributes_type(self):
         """test the type of FileStorage Class Attirbutes"""
 
-        self.assertIsInstance(self.fs._FileStorage__file_path, str)
-        self.assertIsInstance(self.fs._FileStorage__objects, dict)
+        self.assertEqual(type(self.fs._FileStorage__file_path), str)
+        self.assertEqual(type(self.fs._FileStorage__objects), dict)
 
 
     def test_new(self):
