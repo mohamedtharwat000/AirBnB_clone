@@ -170,6 +170,9 @@ class HBNBCommand(cmd.Cmd):
                     elif command == 'show':
                         id = args[1].split('"')[1]
                         self.do_show(f"{cls} {id}")
+                    elif command == 'destroy':
+                        id = args[1].split('"')[1]
+                        self.do_destroy(f"{cls} {id}")
         else:
             return cmd.Cmd.default(self, line)
 
