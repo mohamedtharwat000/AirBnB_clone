@@ -53,7 +53,7 @@ class BaseModel():
     @classmethod
     def count(cls):
         """Count the number of instances of the class"""
-        
         instances = models.storage.all()
-        count = sum(1 for key in instances.keys() if key.startswith(cls.__name__))
+        count = sum(1 for key in instances.keys()
+                    if key.startswith(cls.__name__))
         return count
