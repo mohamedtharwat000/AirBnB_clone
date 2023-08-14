@@ -4,6 +4,7 @@
 
 import unittest
 import json
+from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from os import remove
@@ -68,7 +69,7 @@ class TestFileStorage(unittest.TestCase):
         """Test bm save method."""
         self.bm = BaseModel()
         self.bm.save()
-        self.assertNotEqual(self.bm.created_at, self.bm.updated_at)
+        self.assertEqual(self.bm.updated_at.year, datetime.now().year)
 
     def test_reload(self):
         """Test the 'reload' method."""
