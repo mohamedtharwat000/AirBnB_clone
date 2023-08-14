@@ -71,6 +71,14 @@ class TestFileStorage(unittest.TestCase):
         self.bm.save()
         self.assertTrue(hasattr(self.bm, "updated_at"))
         self.assertGreater(datetime.now(), self.bm.updated_at)
+        self.__class__.fs.new(self.bm)
+        self.__class__.fs.save()
+        self.assertTrue(exists("./file.json"))
+        with open("./file.json", "r") as file:
+            cls_name = self.bm.__class__.__name__
+            bm_instance = json.load(file)[f"{cls_name}.{self.bm.id}"]
+            self.assertEqual(bm_instance, self.bm.to_dict())
+            self.assertTrue("updated_at" in bm_instance)
 
     def test_reload(self):
         """Test the 'reload' method."""
