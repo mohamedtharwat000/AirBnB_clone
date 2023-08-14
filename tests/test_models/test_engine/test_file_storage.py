@@ -69,7 +69,8 @@ class TestFileStorage(unittest.TestCase):
         """Test bm save method."""
         self.bm = BaseModel()
         self.bm.save()
-        self.assertEqual(self.bm.updated_at.year, datetime.now().year)
+        self.assertTrue(hasattr(self.bm, "updated_at"))
+        self.assertGreater(datetime.now(), self.bm.updated_at)
 
     def test_reload(self):
         """Test the 'reload' method."""
