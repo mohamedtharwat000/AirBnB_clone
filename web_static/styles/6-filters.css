@@ -1,7 +1,6 @@
 .filters {
   background-color: white;
   height: 70px;
-  width: 100%;
   border: 1px solid #dddddd;
   border-radius: 4px;
   display: flex;
@@ -19,7 +18,7 @@
   margin: auto 30px auto auto;
 }
 
-.filters:hover {
+.filters button:hover {
   opacity: 90%;
 }
 
@@ -54,6 +53,7 @@
 .popover,
 .popover ul {
   list-style: none;
+  position: relative;
 }
 
 .popover {

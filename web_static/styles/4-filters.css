@@ -19,6 +19,6 @@
   margin: auto 30px auto auto;
 }
 
-.filters:hover {
+.filters button:hover {
   opacity: 90%;
 }
